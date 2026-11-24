@@ -1,25 +1,13 @@
 services:
-  # Backend API
+  # Unified Full-Stack Service (Frontend + Backend on 1 URL)
   - type: web
-    name: salonflow-backend
+    name: salonflow-app
     env: node
-    rootDir: server
-    buildCommand: pnpm install && pnpm build
-    startCommand: pnpm start
+    plan: free
+    buildCommand: cd client && pnpm install && pnpm build && cd ../server && pnpm install && pnpm build
+    startCommand: node server/dist/server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-
-  # Frontend Client
-  - type: web
-    name: salonflow-frontend
-    env: static
-    rootDir: client
-    buildCommand: pnpm install && pnpm build
-    staticPublishPath: dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
